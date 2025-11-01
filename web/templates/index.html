@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ironman Training Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="logo">Ironman Training Dashboard</h1>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('index') }}" class="active">Home</a></li>
+                <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                <li><a href="{{ url_for('training_plan') }}">Training Plan</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <section class="hero">
+            <h1>Track Your Journey to Ironman</h1>
+            <p class="subtitle">Upload your Apple Health data and get instant insights into your training progress</p>
+        </section>
+
+        <section class="upload-section">
+            <div class="upload-card">
+                <h2>Get Started</h2>
+                <p>Upload your Apple Health export to analyze your training data</p>
+
+                <div class="upload-area" id="uploadArea">
+                    <svg class="upload-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                    </svg>
+                    <p>Drag and drop your export.xml file here</p>
+                    <p class="upload-hint">or click to browse</p>
+                    <input type="file" id="fileInput" accept=".xml" style="display: none;">
+                </div>
+
+                <div id="uploadStatus" class="upload-status"></div>
+
+                <button id="uploadBtn" class="btn-primary" style="display: none;">Upload & Analyze</button>
+            </div>
+        </section>
+
+        <section class="features">
+            <h2>Features</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Training Analytics</h3>
+                    <p>Track your weekly progress across swimming, cycling, and running</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Race Predictions</h3>
+                    <p>ML-powered predictions for your Ironman finish time</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <h3>Progress Charts</h3>
+                    <p>Visualize your improvements with interactive charts</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Google Sheets Sync</h3>
+                    <p>Automatically sync your data to Google Sheets</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📄</div>
+                    <h3>PDF Reports</h3>
+                    <p>Export detailed training reports as PDF</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🏃</div>
+                    <h3>Training Plans</h3>
+                    <p>12-week structured training plan for Ironman</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="instructions">
+            <h2>How to Export Apple Health Data</h2>
+            <ol>
+                <li>Open the <strong>Health</strong> app on your iPhone</li>
+                <li>Tap your profile picture in the top right</li>
+                <li>Scroll down and tap <strong>Export All Health Data</strong></li>
+                <li>Save the export.zip file</li>
+                <li>Unzip the file and upload the <strong>export.xml</strong> file here</li>
+            </ol>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Ironman Training Dashboard. Built for athletes, by athletes.</p>
+        </div>
+    </footer>
+
+    <script>
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const uploadStatus = document.getElementById('uploadStatus');
+        let selectedFile = null;
+
+        // Click to upload
+        uploadArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        // Drag and drop
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        });
+
+        // File selection
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+
+        function handleFile(file) {
+            if (!file.name.endsWith('.xml')) {
+                showStatus('Please select an XML file', 'error');
+                return;
+            }
+
+            selectedFile = file;
+            uploadBtn.style.display = 'block';
+            showStatus(`Selected: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`, 'success');
+        }
+
+        // Upload button
+        uploadBtn.addEventListener('click', async () => {
+            if (!selectedFile) return;
+
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+
+            uploadBtn.disabled = true;
+            showStatus('Uploading and analyzing...', 'info');
+
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showStatus(data.message + ' - Redirecting...', 'success');
+                    setTimeout(() => {
+                        window.location.href = data.redirect;
+                    }, 1500);
+                } else {
+                    showStatus('Error: ' + data.error, 'error');
+                    uploadBtn.disabled = false;
+                }
+            } catch (error) {
+                showStatus('Error uploading file: ' + error.message, 'error');
+                uploadBtn.disabled = false;
+            }
+        });
+
+        function showStatus(message, type) {
+            uploadStatus.textContent = message;
+            uploadStatus.className = 'upload-status ' + type;
+            uploadStatus.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

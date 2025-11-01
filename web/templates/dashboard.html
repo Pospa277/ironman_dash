@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Ironman Training</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="logo">Ironman Training Dashboard</h1>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('dashboard') }}" class="active">Dashboard</a></li>
+                <li><a href="{{ url_for('training_plan') }}">Training Plan</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        {% if not workouts %}
+        <div class="alert alert-info">
+            <h2>No Data Yet</h2>
+            <p>Upload your Apple Health data to see your training analytics</p>
+            <a href="{{ url_for('index') }}" class="btn-primary">Upload Data</a>
+        </div>
+        {% else %}
+        <div class="dashboard-header">
+            <h1>Training Dashboard</h1>
+            {% if last_updated %}
+            <p class="last-updated">Last updated: {{ last_updated }}</p>
+            {% endif %}
+            <div class="action-buttons">
+                <button onclick="exportPDF()" class="btn-secondary">Export PDF</button>
+                <button onclick="syncSheets()" class="btn-secondary">Sync to Sheets</button>
+            </div>
+        </div>
+
+        <!-- Race Prediction Card -->
+        {% if prediction %}
+        <div class="card">
+            <h2>Race Time Prediction</h2>
+            <div class="prediction-grid">
+                <div class="prediction-item">
+                    <div class="prediction-label">Fitness Level</div>
+                    <div class="prediction-value">{{ prediction.fitness_level|title }}</div>
+                </div>
+                <div class="prediction-item highlight">
+                    <div class="prediction-label">Predicted Finish Time</div>
+                    <div class="prediction-value large">{{ prediction.total_time }}</div>
+                </div>
+            </div>
+            <div class="segment-times">
+                <div class="segment">
+                    <span class="segment-icon">🏊</span>
+                    <span class="segment-name">Swim</span>
+                    <span class="segment-time">{{ prediction.segments.swim }}</span>
+                </div>
+                <div class="segment">
+                    <span class="segment-icon">🚴</span>
+                    <span class="segment-name">Bike</span>
+                    <span class="segment-time">{{ prediction.segments.bike }}</span>
+                </div>
+                <div class="segment">
+                    <span class="segment-icon">🏃</span>
+                    <span class="segment-name">Run</span>
+                    <span class="segment-time">{{ prediction.segments.run }}</span>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Charts -->
+        <div class="charts-grid">
+            <div class="card">
+                <h2>Weekly Progress vs Ironman Distance</h2>
+                <canvas id="progressChart"></canvas>
+            </div>
+            <div class="card">
+                <h2>Pace Trend (Running)</h2>
+                <canvas id="paceChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Recent Workouts -->
+        <div class="card">
+            <h2>Recent Workouts</h2>
+            <div class="table-responsive">
+                <table class="workout-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Distance</th>
+                            <th>Duration</th>
+                            <th>Pace</th>
+                            <th>Energy</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for workout in workouts %}
+                        <tr>
+                            <td>{{ workout.start_date[:10] }}</td>
+                            <td>
+                                <span class="workout-type {{ workout.type.lower() }}">
+                                    {{ workout.type }}
+                                </span>
+                            </td>
+                            <td>{{ "%.2f"|format(workout.distance_km) }} km</td>
+                            <td>{{ "%.0f"|format(workout.duration_minutes) }} min</td>
+                            <td>{{ "%.2f"|format(workout.pace_min_per_km) }} min/km</td>
+                            <td>{{ "%.0f"|format(workout.energy_kcal) }} kcal</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Ironman Training Dashboard</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+    <script>
+        async function exportPDF() {
+            try {
+                const response = await fetch('/export/pdf');
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'ironman_training_report.pdf';
+                    a.click();
+                } else {
+                    alert('Error exporting PDF');
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+
+        async function syncSheets() {
+            try {
+                const response = await fetch('/sync-sheets', { method: 'POST' });
+                const data = await response.json();
+                if (data.success) {
+                    alert('Data synced to Google Sheets!\n' + data.spreadsheet_url);
+                    window.open(data.spreadsheet_url, '_blank');
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Training Plan - Ironman Training</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="logo">Ironman Training Dashboard</h1>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                <li><a href="{{ url_for('training_plan') }}" class="active">Training Plan</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="plan-header">
+            <h1>12-Week Ironman Training Plan</h1>
+            <p class="subtitle">Progressive training plan to prepare you for race day</p>
+        </div>
+
+        <div class="plan-info card">
+            <h2>Plan Overview</h2>
+            <p>This 12-week training plan progressively builds your endurance across all three disciplines.
+               Each week increases in volume to prepare you for the Ironman distances:</p>
+            <ul>
+                <li><strong>Swim:</strong> 3.86 km</li>
+                <li><strong>Bike:</strong> 180.25 km</li>
+                <li><strong>Run:</strong> 42.2 km</li>
+            </ul>
+            <p class="note"><strong>Note:</strong> Always listen to your body and adjust training as needed.
+               Consult with a coach for personalized training.</p>
+        </div>
+
+        <div class="training-weeks">
+            {% for week_plan in plan %}
+            <div class="week-card card">
+                <div class="week-header">
+                    <h3>Week {{ week_plan.week }}</h3>
+                    <span class="week-volume">Total: {{ week_plan.total_volume }}</span>
+                </div>
+                <div class="week-schedule">
+                    <div class="day-item">
+                        <div class="day-name">Monday</div>
+                        <div class="day-workout">{{ week_plan.monday }}</div>
+                    </div>
+                    <div class="day-item">
+                        <div class="day-name">Tuesday</div>
+                        <div class="day-workout">{{ week_plan.tuesday }}</div>
+                    </div>
+                    <div class="day-item">
+                        <div class="day-name">Wednesday</div>
+                        <div class="day-workout">{{ week_plan.wednesday }}</div>
+                    </div>
+                    <div class="day-item">
+                        <div class="day-name">Thursday</div>
+                        <div class="day-workout">{{ week_plan.thursday }}</div>
+                    </div>
+                    <div class="day-item">
+                        <div class="day-name">Friday</div>
+                        <div class="day-workout">{{ week_plan.friday }}</div>
+                    </div>
+                    <div class="day-item highlight">
+                        <div class="day-name">Saturday</div>
+                        <div class="day-workout">{{ week_plan.saturday }}</div>
+                    </div>
+                    <div class="day-item highlight">
+                        <div class="day-name">Sunday</div>
+                        <div class="day-workout">{{ week_plan.sunday }}</div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="plan-tips card">
+            <h2>Training Tips</h2>
+            <div class="tips-grid">
+                <div class="tip">
+                    <h3>🏊 Swimming</h3>
+                    <ul>
+                        <li>Focus on technique before speed</li>
+                        <li>Practice open water swimming</li>
+                        <li>Work on sighting and navigation</li>
+                    </ul>
+                </div>
+                <div class="tip">
+                    <h3>🚴 Cycling</h3>
+                    <ul>
+                        <li>Build aerobic base with long rides</li>
+                        <li>Practice nutrition on the bike</li>
+                        <li>Include hill training</li>
+                    </ul>
+                </div>
+                <div class="tip">
+                    <h3>🏃 Running</h3>
+                    <ul>
+                        <li>Practice brick workouts (bike-to-run)</li>
+                        <li>Include easy recovery runs</li>
+                        <li>Gradually increase long run distance</li>
+                    </ul>
+                </div>
+                <div class="tip">
+                    <h3>💪 Recovery</h3>
+                    <ul>
+                        <li>Get 7-9 hours of sleep</li>
+                        <li>Include rest days</li>
+                        <li>Focus on nutrition and hydration</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Ironman Training Dashboard</p>
+        </div>
+    </footer>
+</body>
+</html>
