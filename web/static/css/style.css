@@ -1,0 +1,589 @@
+/* Ironman Training Dashboard Styles */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #1a73e8;
+    --secondary-color: #34a853;
+    --danger-color: #ea4335;
+    --warning-color: #fbbc04;
+    --dark: #202124;
+    --light: #f8f9fa;
+    --border: #dadce0;
+    --text-primary: #202124;
+    --text-secondary: #5f6368;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--text-primary);
+    background-color: var(--light);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Navbar */
+.navbar {
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 1rem 0;
+    margin-bottom: 2rem;
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-primary);
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: var(--primary-color);
+}
+
+/* Hero Section */
+.hero {
+    text-align: center;
+    padding: 3rem 0;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+}
+
+/* Upload Section */
+.upload-section {
+    margin: 3rem 0;
+}
+
+.upload-card {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.upload-card h2 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.upload-area {
+    border: 2px dashed var(--border);
+    border-radius: 8px;
+    padding: 3rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin: 2rem 0;
+}
+
+.upload-area:hover,
+.upload-area.dragover {
+    border-color: var(--primary-color);
+    background-color: #f0f7ff;
+}
+
+.upload-icon {
+    width: 64px;
+    height: 64px;
+    color: var(--primary-color);
+    margin: 0 auto 1rem;
+}
+
+.upload-hint {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.upload-status {
+    display: none;
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+}
+
+.upload-status.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.upload-status.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.upload-status.info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+
+/* Buttons */
+.btn-primary,
+.btn-secondary {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-block;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #1557b0;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.btn-secondary {
+    background-color: white;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
+.btn-secondary:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:disabled,
+.btn-secondary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Features Grid */
+.features {
+    margin: 4rem 0;
+}
+
+.features h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: var(--primary-color);
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.feature-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.feature-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.feature-card h3 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+/* Card */
+.card {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+}
+
+.card h2 {
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+}
+
+/* Dashboard */
+.dashboard-header {
+    margin-bottom: 2rem;
+}
+
+.dashboard-header h1 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.last-updated {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+/* Prediction Card */
+.prediction-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.prediction-item {
+    padding: 1.5rem;
+    background: var(--light);
+    border-radius: 8px;
+    text-align: center;
+}
+
+.prediction-item.highlight {
+    background: linear-gradient(135deg, var(--primary-color), #4285f4);
+    color: white;
+}
+
+.prediction-label {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin-bottom: 0.5rem;
+}
+
+.prediction-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.prediction-value.large {
+    font-size: 2.5rem;
+}
+
+.segment-times {
+    display: flex;
+    justify-content: space-around;
+    gap: 1rem;
+}
+
+.segment {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    background: var(--light);
+    border-radius: 8px;
+    flex: 1;
+}
+
+.segment-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.segment-name {
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 0.25rem;
+}
+
+.segment-time {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+/* Charts */
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+canvas {
+    max-height: 300px;
+}
+
+/* Table */
+.table-responsive {
+    overflow-x: auto;
+}
+
+.workout-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.workout-table thead {
+    background: var(--primary-color);
+    color: white;
+}
+
+.workout-table th,
+.workout-table td {
+    padding: 1rem;
+    text-align: left;
+}
+
+.workout-table tbody tr:nth-child(even) {
+    background: var(--light);
+}
+
+.workout-table tbody tr:hover {
+    background: #e8f0fe;
+}
+
+.workout-type {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.workout-type.running {
+    background: #fce8e6;
+    color: #c5221f;
+}
+
+.workout-type.cycling {
+    background: #e8f0fe;
+    color: #1a73e8;
+}
+
+.workout-type.swimming {
+    background: #e6f4ea;
+    color: #137333;
+}
+
+/* Training Plan */
+.plan-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.plan-header h1 {
+    color: var(--primary-color);
+    font-size: 2.5rem;
+}
+
+.plan-info ul {
+    margin: 1rem 0;
+    padding-left: 2rem;
+}
+
+.plan-info li {
+    margin: 0.5rem 0;
+}
+
+.note {
+    padding: 1rem;
+    background: #fff3cd;
+    border-left: 4px solid var(--warning-color);
+    margin-top: 1rem;
+    border-radius: 4px;
+}
+
+.training-weeks {
+    margin: 2rem 0;
+}
+
+.week-card {
+    margin-bottom: 2rem;
+}
+
+.week-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+}
+
+.week-header h3 {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+}
+
+.week-volume {
+    background: var(--primary-color);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+.week-schedule {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.day-item {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 1rem;
+    padding: 0.75rem;
+    background: var(--light);
+    border-radius: 8px;
+}
+
+.day-item.highlight {
+    background: #e8f0fe;
+    border-left: 4px solid var(--primary-color);
+}
+
+.day-name {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.day-workout {
+    color: var(--text-primary);
+}
+
+.tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.tip h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.tip ul {
+    padding-left: 1.5rem;
+}
+
+.tip li {
+    margin: 0.5rem 0;
+}
+
+/* Instructions */
+.instructions {
+    margin: 3rem 0;
+}
+
+.instructions h2 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.instructions ol {
+    padding-left: 2rem;
+}
+
+.instructions li {
+    margin: 1rem 0;
+    font-size: 1.1rem;
+}
+
+/* Alert */
+.alert {
+    padding: 2rem;
+    border-radius: 12px;
+    text-align: center;
+    margin: 2rem 0;
+}
+
+.alert-info {
+    background: #e8f0fe;
+    border: 2px solid var(--primary-color);
+}
+
+.alert h2 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+/* Footer */
+.footer {
+    background: var(--dark);
+    color: white;
+    text-align: center;
+    padding: 2rem 0;
+    margin-top: 4rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .nav-links {
+        gap: 1rem;
+    }
+
+    .feature-grid,
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .prediction-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .segment-times {
+        flex-direction: column;
+    }
+
+    .day-item {
+        grid-template-columns: 1fr;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+}
