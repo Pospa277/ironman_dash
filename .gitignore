@@ -45,3 +45,8 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Mac app build files
+*.app
+*.dmg
+build_mac/
